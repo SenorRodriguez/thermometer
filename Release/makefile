@@ -31,56 +31,56 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 LSS += \
-uart_test.lss \
+thermometer.lss \
 
 FLASH_IMAGE += \
-uart_test.hex \
+thermometer.hex \
 
 EEPROM_IMAGE += \
-uart_test.eep \
+thermometer.eep \
 
 SIZEDUMMY += \
 sizedummy \
 
 
 # All Target
-all: uart_test.elf secondary-outputs
+all: thermometer.elf secondary-outputs
 
 # Tool invocations
-uart_test.elf: $(OBJS) $(USER_OBJS)
+thermometer.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: AVR C Linker'
-	avr-gcc -Wl,-Map,uart_test.map -mmcu=atmega328p -o "uart_test.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	avr-gcc -Wl,-Map,thermometer.map -mmcu=atmega328p -o "thermometer.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-uart_test.lss: uart_test.elf
+thermometer.lss: thermometer.elf
 	@echo 'Invoking: AVR Create Extended Listing'
-	-avr-objdump -h -S uart_test.elf  >"uart_test.lss"
+	-avr-objdump -h -S thermometer.elf  >"thermometer.lss"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-uart_test.hex: uart_test.elf
+thermometer.hex: thermometer.elf
 	@echo 'Create Flash image (ihex format)'
-	-avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex uart_test.elf  "uart_test.hex"
+	-avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex thermometer.elf  "thermometer.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-uart_test.eep: uart_test.elf
+thermometer.eep: thermometer.elf
 	@echo 'Create eeprom image (ihex format)'
-	-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex uart_test.elf  "uart_test.eep"
+	-avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex thermometer.elf  "thermometer.eep"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sizedummy: uart_test.elf
+sizedummy: thermometer.elf
 	@echo 'Invoking: Print Size'
-	-avr-size --format=avr --mcu=atmega328p uart_test.elf
+	-avr-size --format=avr --mcu=atmega328p thermometer.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(FLASH_IMAGE)$(ELFS)$(OBJS)$(ASM_DEPS)$(EEPROM_IMAGE)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS)$(LSS)$(C_DEPS) uart_test.elf
+	-$(RM) $(FLASH_IMAGE)$(ELFS)$(OBJS)$(ASM_DEPS)$(EEPROM_IMAGE)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS)$(LSS)$(C_DEPS) thermometer.elf
 	-@echo ' '
 
 secondary-outputs: $(LSS) $(FLASH_IMAGE) $(EEPROM_IMAGE) $(SIZEDUMMY)
